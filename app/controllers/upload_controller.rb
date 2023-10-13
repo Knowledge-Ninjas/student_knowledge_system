@@ -68,13 +68,16 @@ class UploadController < ApplicationController
           #if the columns are not null, then proceed
           Rails.logger.info "Collected student #{row.inspect}"
           if (row["FIRST NAME"] && row["LAST NAME"] && row["UIN"] && row["EMAIL"] && row["CLASSIFICATION"] && row["MAJOR"])
+            # Check and replace if the email domain is "@email.tamu.edu"
+            email = row["EMAIL"].strip
+            email_modified = email.gsub(/@email\.tamu\.edu$/, '@tamu.edu')
             @student = Student.where(uin: row["UIN"].strip(), teacher: current_user.email).first
             if !@student
               @student = Student.new(
                   firstname:row["FIRST NAME"].strip(),
                   lastname:row["LAST NAME"].strip(),
                   uin: row["UIN"].strip(),
-                  email: row["EMAIL"].strip(),
+                  email: email_modified,
                   classification: row["CLASSIFICATION"].strip(),
                   major: row["MAJOR"].strip(),
                   teacher: current_user.email,
@@ -87,7 +90,7 @@ class UploadController < ApplicationController
                   firstname:row["FIRST NAME"].strip(),
                   lastname:row["LAST NAME"].strip(),
                   uin: row["UIN"].strip(),
-                  email: row["EMAIL"].strip(),
+                  email: email_modified,
                   classification: row["CLASSIFICATION"].strip(),
                   major: row["MAJOR"].strip(),
                   teacher: current_user.email
