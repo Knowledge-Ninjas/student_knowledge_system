@@ -56,6 +56,29 @@ RSpec.describe UploadController, type: :controller do
       end
     end
 
+    
+    describe 'POST #parse' do
+      it 'modifies email addresses in the database as expected' do        
+        # Use the zip file from the fixture
+        zip_file = fixture_file_upload('test_upload.zip', 'application/zip')
+        # Create the actual parameters for the request
+        params = {
+          file: zip_file,
+          course_temp: 'CSCE606',
+          section_temp: '600',
+          semester_temp: 'Fall 2023'
+        }
+        # Send a POST request to the 'parse' action with the actual parameters
+        post :parse, params: params
+
+        # Check that all emails in the database have the @tamu.edu domain
+        students = Student.all
+        students.each do |student|
+          expect(student.email).to end_with('@tamu.edu')
+        end
+      end
+    end
+
     # context "with invalid file and contents" do
     #   it "redirects when CSV column contents are different than expected" do
     #     file = fixture_file_upload('Wrong_Cols.zip', 'application/zip')
