@@ -16,6 +16,7 @@ class CoursesController < ApplicationController
     else
       @courses_db_result = Course.search_semester(params[:search_semester], current_user.email) 
     end  
+    @courses_db_result = @courses_db_result.where(archived: false)
     @courses_comb_hash = Hash[]
     @courses_db_result.each do |c|
         if !@courses_comb_hash[c.course_name.strip]
@@ -204,6 +205,27 @@ end
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def archive
+    @course = Course.find(params[:id])
+    @course.update(archived: true)
+
+    #flash message to notify the user
+    flash[:notice] = "Course archived successfully."
+
+    redirect_to courses_url
+  end
+
+  def archived_courses
+    @archived_courses = Course.where(archived: true)
+
+  end
+
+  def unarchive
+    @course = Course.find(params[:id])
+    @course.update(archived: false)
+    redirect_to archived_courses_path, notice: 'Course has been unarchived.'
   end
 
   # DELETE /courses/1 or /courses/1.json
