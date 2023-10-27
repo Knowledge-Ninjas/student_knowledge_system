@@ -36,6 +36,17 @@ class HomeController < ApplicationController
   end
   helper_method :getNumDue
 
+### for getting all the students due for practice as per the course
+  def getStudentsDueCourse(course)
+
+    course_ids = Course.where(course_name: course.course_name, teacher: current_user.email).pluck(:id)
+    student_ids = StudentCourse.where(course_id: course_ids).pluck(:student_id)
+    due_students = Student.where(id: student_ids).getDue(current_user.email)
+    return due_students.length
+  end  
+  helper_method :getStudentsDueCourse
+
+
   def getDueStudentQuiz()
     path = ""
     if @dueStudents.length > 0
