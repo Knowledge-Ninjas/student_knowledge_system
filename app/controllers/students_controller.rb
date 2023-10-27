@@ -115,6 +115,10 @@ class StudentsController < ApplicationController
             student_course_entry = @student_course_records_hash[course_db_entry.id]
             student_course_entry.course_record = course_db_entry
         end
+        
+        if params[:add_note]
+            @add_note = true
+          end
 
         @student_course_records = @student_course_records_hash.values
         Rails.logger.info "Collected all student courses #{@student_course_records.inspect}"

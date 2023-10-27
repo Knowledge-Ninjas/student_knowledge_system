@@ -74,13 +74,16 @@
             <p>
             <strong>Notes:</strong>
             <% if @student.notes.present? %>
-              <%= @student.notes.map(&:content).join("<br>") %>
+              <ul>
+                <% @student.notes.each do |note| %>
+                  <li><%= note.content %></li>
+                <% end %>
+              </ul>
             <% else %>
               No notes available.
             <% end %>
-            </p>
-
-
+          </p>
+          
         </div>
 
     </div>
