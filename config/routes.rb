@@ -37,6 +37,12 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
 
   # root 'home#index'
+
+  resources :students do
+    collection do
+      get 'search'
+    end
+  end
    
   passwordless_for :users
   resources :users

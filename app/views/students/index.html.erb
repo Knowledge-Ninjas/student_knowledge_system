@@ -5,6 +5,18 @@
   <div class="w-4/5 my-2 py-2 mx-auto text-center border-2 border-dashed border-gray-400 rounded font-source-serif-pro text-[1.5rem] text-[#500000] font-bold">
     <h1>Students</h1>
   </div>
+
+  
+    <!-- Search form -->
+  <div class="my-4 mx-auto">
+    <%= form_with(url: search_students_path, method: "get", id: "search-form") do |f| %>
+      <div class="mb-4">
+        <%= f.label :search, "Search Students by Name", class: "block text-[#500000] font-bold mb-2" %>
+        <%= f.text_field :search, id: "search-input", placeholder: "Search by Name", class: "rounded border p-2" %>
+      </div>
+    <% end %>
+  </div>
+
   <table class="rounded mx-auto w-5/6 mt-2 mb-6 table table-striped table-hover text-center">
     <thead>
       <tr>
@@ -121,3 +133,23 @@
     <span><%= button_to "New student", new_student_path, :method => :get %></span>
   </div>
 </footer>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $("#search-input").on("input", function() {
+      var query = $(this).val().toLowerCase();
+
+      // Hide all rows initially
+      $("#students tr").hide();
+
+      // Show rows where the name matches the query
+      $("#students tr td:nth-child(2)").each(function() {
+        var studentName = $(this).text().toLowerCase();
+        if (studentName.indexOf(query) >= 0) {
+          $(this).closest("tr").show();
+        }
+      });
+    });
+  });
+</script>
