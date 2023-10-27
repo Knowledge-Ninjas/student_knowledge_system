@@ -36,7 +36,17 @@ RSpec.describe HomeController, type: :controller do
             get :index
             expect(assigns(:dueStudents).count).to eq(3)
         end
-    end
+        it "displays a new course with 0 students due in the table" do
+          # Create a new course
+          new_course = Course.create(course_name: "New Course", teacher: 'student@gmail.com', section: '501', semester: 'Spring 2023')
+          initial_due_count = controller.getStudentsDueCourse(new_course)
+          get :index
+          # Expecting that the count for the new course is zero because there are no students practiced
+          expect(controller.getStudentsDueCourse(new_course)).to eq(0)
+          
+        end
+
+            end
 
   describe "#stripYear" do
     it "returns the last word of the string if the string has multiple words" do
