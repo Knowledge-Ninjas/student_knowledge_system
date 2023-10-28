@@ -1,3 +1,4 @@
+@students
 Feature: Perform CRUD actions on students
 
 As a professor,
@@ -109,3 +110,28 @@ Scenario: Delete Student Course
     Then I should see "Edit Student Course History"
     And I click the first "Delete this course of student"
     Then I should see "Given student in a course is deleted."
+
+
+Scenario: User can search for students
+    When I sign in as "team_cluck_admin@gmail.com"
+    Given I am on the upload page
+    When I upload a zip file
+    And I input form information
+    When I click save
+    And I visit the students page
+    And I enter "Search by Name" with "Manik"
+    Then I find student "Manik"
+    And I do not find student "Shubham Mhaske"
+
+Scenario: User can search for students with partial name
+    When I sign in as "team_cluck_admin@gmail.com"
+    Given I am on the upload page
+    When I upload a zip file
+    And I input form information
+    When I click save
+    And I visit the students page
+    And I enter "Search by Name" with "Ta"
+    Then I find student "Taneja"
+    And I do not find student "Shubham Mhaske"
+
+    

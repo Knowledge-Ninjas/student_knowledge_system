@@ -31,3 +31,21 @@
     # fill_in "student_course[#{string}]", with: string2
     all("input[name='student_course[#{string}]']").first.fill_in with: string2
   end
+
+  When('I visit the students page') do
+    visit students_path()
+  end
+
+  When('I enter "Search by Name" with {string}') do |name|
+    fill_in 'Search by Name', with: name
+  end
+
+  Then('I find student {string}') do |text|
+    expect(page).to have_content(text)
+  end
+  
+  Then('I do not find student {string}') do |text|
+    expect(page).not_to have_content(text)
+  end
+
+  
