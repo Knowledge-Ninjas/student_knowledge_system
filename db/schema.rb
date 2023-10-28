@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_27_194723) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_27_141344) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -49,13 +49,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_194723) do
     t.boolean "archived"
   end
 
+  create_table "enrollments", force: :cascade do |t|
+    t.integer "course_id", null: false
+    t.integer "student_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_enrollments_on_course_id"
+    t.index ["student_id"], name: "index_enrollments_on_student_id"
+  end
+
   create_table "notes", force: :cascade do |t|
     t.text "content"
     t.integer "student_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "added_by"
-    t.datetime "added_at"
     t.index ["student_id"], name: "index_notes_on_student_id"
   end
 
@@ -137,6 +144,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_194723) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "enrollments", "courses"
+  add_foreign_key "enrollments", "students"
   add_foreign_key "notes", "students"
   add_foreign_key "student_courses", "courses"
   add_foreign_key "student_courses", "students"

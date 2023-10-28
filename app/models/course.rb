@@ -1,4 +1,6 @@
 class Course < ApplicationRecord
+  has_many :enrollments
+  has_many :students, through: :enrollments
   attribute :archived, :boolean, default: false
   validates :archived, inclusion: { in: [true, false] }
   def self.search_course(search, teacher)
@@ -15,6 +17,8 @@ class Course < ApplicationRecord
         @courses_db_result = Course.where(teacher: teacher)
       end
   end
+
+  
 
   def self.search_semester(search, teacher)
     if search

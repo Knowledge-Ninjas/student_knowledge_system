@@ -5,6 +5,7 @@ class CoursesController < ApplicationController
   before_action :require_user!
 
 
+ 
 
   # GET /courses or /courses.json
   def index 
@@ -44,6 +45,14 @@ class CoursesController < ApplicationController
     #get all students currently and previously enrolled in this course
     @student_ids = StudentCourse.where(course_id: @all_course_ids).pluck(:student_id)
     @student_records = Student.where(id: @student_ids)
+
+####for due courses
+    #@course_ids = Course.where(course_name: @course.course_name, teacher: current_user.email).pluck(:id)
+    #@student_ids = StudentCourse.where(course_id: @course_ids).pluck(:student_id)
+    #@due_students = Student.where(id: @student_ids).getDue(current_user.email).length
+
+
+
     #get all students tags for those currently and previously enrolled in this course
     @tags = Set[]
     for student in @student_records do
@@ -140,6 +149,17 @@ class CoursesController < ApplicationController
   def edit
   end
 
+  #def getNumDueForCourse(course)
+    # Replace 'Course' with the appropriate model name if needed
+  #  course_ids = Course.where(course_name: course.course_name, teacher: current_user.email).pluck(:id)
+  #  student_ids = StudentCourse.where(course_id: course_ids).pluck(:student_id)
+  #  due_students = Student.where(id: student_ids).getDue(current_user.email)
+  #  return due_students.length
+  #end
+
+
+
+
   # POST /courses or /courses.json
   def create
     @course = Course.new(course_params)
@@ -188,6 +208,13 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
     @course.update(archived: false)
     redirect_to archived_courses_path, notice: 'Course has been unarchived.'
+  end
+
+  ##number of students in a course
+  def number_of_students_in_course(course_id)
+    course = Course.find(course_id)
+    students = course.students
+    @counted =  students.count
   end
 
   # DELETE /courses/1 or /courses/1.json
