@@ -1,35 +1,30 @@
-<head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.1.4/tailwind.min.css">
-</head>
+
 
 <%= form_with(model: @post) do |form| %>
   <div>
     <div class="w-4/5 mx-auto">
-      <h1 class = "text-center my-4 py-2 font-source-serif-pro text-[1.5rem] text-[#500000] font-bold p-2 border-2 border-dashed border-gray-400 rounded">Drag and Drop OR Click "Choose File", then provide the course information</h1>
-      
-      <!--if the file uploaded, send message-->
-      <% if @post %>
-        <p style="color: green"><%= notice %>File Uploaded</p>
-      <% end %>
+      <!-- ... -->
+
 
       <div class="flex flex-col font-source-serif-pro bg-white rounded p-4 w-full">
         <div class="text-center">
-            <!--input course code-->
-            <p class = "mb-2"> Course Code: </p>
-            <%= form.text_field :course_temp, pattern: '\b(?\w{3,4})V(?\d{3})\b', placeholder: "CSCE ###", class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4" %>
+          <!-- Course Code Drop-Down -->
+          <p class="mb-2">Course Code:</p>
+          <%= form.select :course_temp, options_for_select(['CSCE 600','CSCE 601','CSCE 602','CSCE 603','CSCE 604','CSCE 605','CSCE 606','CSCE 608','CSCE 610', 'CHEM 623', 'MATH 670', 'ENGR 600','ENGR 677','ENGR 681','ENGR 684','ENGR 685','ENGR 689','ENGR 698','ENGR 600','ENGR 600','ENGR 600',]), {}, class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4" %>
 
-            <!--input section-->
-            <p class = "mb-2"> Section: </p>
-            <%= form.text_field :section_temp, pattern: '\b(?\d{3})\b', placeholder: "###", class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4" %>      
+          <!-- Section Input -->
+          <p class="mb-2">Section:</p>
+          <%= form.text_field :section_temp, pattern: '\b(?\d{3})\b', placeholder: "###", class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4" %>
 
-            <!--input semester-->
-            <p class = "mb-2"> Semester: </p>
-            <%= form.text_field :semester_temp, pattern: '\b(Fall|Spring)V(?\d{4})\b', placeholder: "Fall/Spring 20XX", class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4"%>
+          <!-- Semester Input -->
+          <p class="mb-2">Semester:</p>
+          <%= form.text_field :semester_temp, pattern: '\b(Fall|Spring)V(?\d{4})\b', placeholder: "Fall/Spring 20XX", class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4" %>
         </div>
         <br>
+
         <div class="col">
           <div class="text-center">
-            <!--implement dropzone for submitting zip files-->
+            <!-- Implement dropzone for submitting zip files -->
             <%= form.file_field :file, accept: '.zip', multiple: false, class: "dropzone" %>
           </div>
         </div>
@@ -37,9 +32,12 @@
     </div>
 
     <div class="flex justify-center mx-auto my-3 ">
-      <!--on submit, send user back to index page-->
+      <!-- On submit, send the user back to the index page -->
       <%= form.submit "Save", class: "bg-[#DBABAB] hover:cursor-pointer font-source-serif-pro font-semibold hover:bg-[#ca8484] text-[#500000] text-[1rem] container w-auto hover:underline hover:underline-offset-4 py-1 px-3 border-2 rounded border-dotted border-[#500000]" %>
       <br>
     </div>
   </div>
 <% end %>
+
+
+

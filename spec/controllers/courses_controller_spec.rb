@@ -192,6 +192,36 @@ RSpec.describe CoursesController, type: :controller do
       end
     end
 
+    # describe 'POST #create' do
+    # context 'with valid parameters, including course code selection' do
+    #   it 'creates a new course with the selected course code' do
+    #     post :create, params: {
+    #       course: {
+    #         course_temp: 'ENGR 600',  # Simulate selecting 'ENGR 600' from the dropdown
+    #         section_temp: '123',
+    #         semester_temp: 'Fall 2023',
+    #         # Add other required parameters
+    #       }
+    #     }
+  
+    #     # Add your expectations, such as checking if the course is created
+    #     expect(response).to redirect_to(course_path(assigns[:course]))
+    #     expect(flash[:notice]).to eq('Course was successfully created.')
+  
+        # You can also check if the course was created with the correct course code
+        # new_course = Course.last
+        # expect(new_course.course_name).to eq('ENGR 600')  # Assuming the course_name field is used to store 'ENGR 600'
+        # expect(new_course.section).to eq('123')
+        # expect(new_course.semester).to eq('Fall 2023')
+        # Add more expectations for other attributes if needed
+  #     end
+  #   end
+  # end
+  
+
+
+    
+
 
     
 

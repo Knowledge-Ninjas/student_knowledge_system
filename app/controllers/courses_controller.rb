@@ -161,9 +161,23 @@ class CoursesController < ApplicationController
 
 
   # POST /courses or /courses.json
+  # def create
+  #   @course = Course.new(course_params)
+
+  #   respond_to do |format|
+  #     if @course.save
+  #       format.html { redirect_to course_url(@course), notice: "Course was successfully created." }
+  #       format.json { render :show, status: :created, location: @course }
+  #     else
+  #       format.html { render :new, status: :unprocessable_entity }
+  #       format.json { render json: @course.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
+
   def create
     @course = Course.new(course_params)
-
+  
     respond_to do |format|
       if @course.save
         format.html { redirect_to course_url(@course), notice: "Course was successfully created." }
