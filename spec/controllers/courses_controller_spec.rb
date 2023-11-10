@@ -129,6 +129,22 @@ RSpec.describe CoursesController, type: :controller do
             expect(assigns(:student_records).first.records.first.lastname).to eq("Oliphant")
         end
 
+        it "redirects to courses page when redirecting from student detail" do
+          # Create a student associated with the course
+          student = Student.create(firstname:'Richy', lastname:'Rich', uin:'734826452', email:'rich@tamu.edu', classification:'U2', major:'CPSC', teacher:'student@gmail.com')
+          StudentCourse.create(course_id: @course1.id, student_id: student.id, final_grade: 'A')
+    
+    
+          # Visiting the course show page
+          get :show, params: { id: @course1.id }
+          # Visit the student detail page
+          get :show, params: { id: student.id }
+          #assuming back browser button's history will always redirect user to course path(which is the sure case)
+          redirect_to courses_path
+          # Ensure that the response is a successfull redirect call
+          expect(response).to be_redirect
+          end
+
 
         
 
