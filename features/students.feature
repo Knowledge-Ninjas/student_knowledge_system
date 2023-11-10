@@ -54,7 +54,7 @@ Scenario: Search by tag
     And I select "Spring 2023" under semester
     Then I submit the form
     Then I should see "Kunal"
-    When I click show this student
+    And I click the student row
     And I click "Edit this student"
     When I fill in student "create_tag" with "test"
     And I click "Update Student"
@@ -87,7 +87,7 @@ Scenario: Update Student Course
     And I go to the students page
     And I select "Spring 2023" under semester
     Then I submit the form
-    And I click the first "Show this student"
+    And I click the student row
     And I click "Edit this student"
     Then I should see "Edit Student Course History"
     And I fill in the first student course "final_grade" with "A"
@@ -105,7 +105,7 @@ Scenario: Delete Student Course
     And I select "Spring 2023" under semester
     Then I submit the form
     Then I should see "Kunal"
-    And I click the first "Show this student"
+    And I click the student row
     And I click "Edit this student"
     Then I should see "Edit Student Course History"
     And I click the first "Delete this course of student"
@@ -133,5 +133,16 @@ Scenario: User can search for students with partial name
     And I enter "Search by Name" with "Ta"
     Then I find student "Taneja"
     And I do not find student "Shubham Mhaske"
+
+
+Scenario: Clicking on a student row should navigate to the student profile
+    When I sign in as "team_cluck_admin@gmail.com"
+    Given I am on the upload page
+    When I upload a zip file
+    And I input form information
+    When I click save
+    And I visit the students page
+    Then I click on the student row to visit student profile page
+
 
     

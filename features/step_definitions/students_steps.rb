@@ -12,9 +12,10 @@
     expect(page).to have_content("Kunal")
   end
 
-  When('I click show this student') do
-    expect(page).to have_selector("button", text: "Show this student")
-    first("button", text: "Show this student").click
+  When('I click the student row') do
+    first_student_row = first("tr[data-href^='/students/']")
+    student_profile_path = first_student_row['data-href']
+    visit student_profile_path
   end
 
   When('I fill in student {string} with {string}') do |string, string2|
@@ -46,6 +47,14 @@
   
   Then('I do not find student {string}') do |text|
     expect(page).not_to have_content(text)
+  end
+
+  Then('I click on the student row to visit student profile page') do
+    first_student_row = first("tr[data-href^='/students/']")
+    student_profile_path = first_student_row['data-href']
+    visit student_profile_path
+  
+    expect(page.current_path).to include(student_profile_path)
   end
 
   
