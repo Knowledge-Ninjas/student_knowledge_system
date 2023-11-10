@@ -92,7 +92,10 @@ class StudentsController < ApplicationController
       for student_course in student_courses do
         course = Course.find_by(id: student_course.course_id)
         #Course history format: CSCE 999 (FALL 2019), ECEN 350 ( SPRING 2020), etc
-        @course_history.add(course.course_name.to_s + " (" + course.semester.to_s + ")")
+        #@course_history.add(course.course_name.to_s + " (" + course.semester.to_s + ")")
+        if course
+            @course_history.add(course.course_name.to_s + " (" + course.semester.to_s + ")")
+        end    
       end
       #convert course history into a string
       @course_history = @course_history.to_a.join(", ")

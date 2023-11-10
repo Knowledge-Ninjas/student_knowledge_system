@@ -99,7 +99,7 @@
           <%= button_to "Edit this student", edit_student_path(@student), :method => :get %>
         </div>
         <div class="mr-4 font-source-serif-pro font-semibold hover:bg-gray-300 text-[#500000] text-[1rem] hover:underline hover:underline-offset-4 py-1 px-3 border-2 rounded border-dotted border-[#500000]">
-          <%= button_to "Back to students", students_path, :method=>:get  %>
+          <%= link_to "Back to students", :back, :method=>:get  %>
         </div>
         <div class="font-source-serif-pro font-semibold hover:bg-gray-300 text-[#500000] text-[1rem] hover:underline hover:underline-offset-4 py-1 px-3 border-2 rounded border-dotted border-[#500000]">
             <%= button_to "Delete this student", student_path(:id=>@student.id, :type => "all"), method: :delete %>
