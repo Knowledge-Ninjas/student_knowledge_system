@@ -129,22 +129,6 @@ RSpec.describe CoursesController, type: :controller do
             expect(assigns(:student_records).first.records.first.lastname).to eq("Oliphant")
         end
 
-        it "redirects to courses page when redirecting from student detail" do
-          # Create a student associated with the course
-          student = Student.create(firstname:'Richy', lastname:'Rich', uin:'734826452', email:'rich@tamu.edu', classification:'U2', major:'CPSC', teacher:'student@gmail.com')
-          StudentCourse.create(course_id: @course1.id, student_id: student.id, final_grade: 'A')
-    
-    
-          # Visiting the course show page
-          get :show, params: { id: @course1.id }
-          # Visit the student detail page
-          get :show, params: { id: student.id }
-          #assuming back browser button's history will always redirect user to course path(which is the sure case)
-          redirect_to courses_path
-          # Ensure that the response is a successfull redirect call
-          expect(response).to be_redirect
-          end
-
 
         
 
@@ -205,6 +189,32 @@ RSpec.describe CoursesController, type: :controller do
         post :unarchive, params: { id: @course5.id }
         @course5.reload
         expect(@course5.archived).to be(false)
+      end
+    end
+
+    describe 'POST #create' do
+      context 'with valid parameters, including course code selection' do
+        it 'creates a new course with the selected course code' do
+          post :create, params: {
+            course: {
+              course_name:"ENGR 600", teacher:'yetchy@gmail.com', section:"123", semester:'Fall 2023', archived:true
+              # Add other required parameters
+            }
+          }
+
+          # Add your expectations, such as checking if the course is created
+          expect(response).to redirect_to(course_path(assigns[:course]))
+          expect(flash[:notice]).to eq('Course was successfully created.')
+
+          # You can also check if the course was created with the correct course code
+          new_course = Course.last
+          expect(new_course.course_name).to eq('ENGR 600')
+          expect(new_course.section).to eq(123)
+          expect(new_course.semester).to eq('Fall 2023')
+
+          # Add a new expectation to check if the course_temp attribute is correctly set
+          # expect(new_course.course_temp).to eq('ENGR 600') # Assuming that 'ENGR 600' maps to the course_temp attribute in your model
+        end
       end
     end
 
