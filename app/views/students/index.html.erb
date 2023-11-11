@@ -55,7 +55,7 @@
         <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2"> Email </th>
         <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2"> Course(s)/Semester(s): </th>
         <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2"> Tags </th>
-        <th class="rounded-tr-lg px-auto py-2"> View Student Profile: </th>
+        
       </tr>
     <%end%>
     </thead>
@@ -64,7 +64,7 @@
     <% if !@yearbook_style %>
       <div>
         <% @students.each do |student| %>
-          <tr class="even:bg-white odd:bg-gray-100 hover:bg-gray-200">
+          <tr class="even:bg-white odd:bg-gray-100 hover:bg-gray-200" data-href="<%= student_path(student.records[0]) %>">
             <td>
               <% if student.records[0].image.attached? %>
                   <%= image_tag student.records[0].image.variant(:thumb), class: 'py-4 bi bi-person rounded-circle d-block mx-auto', style: 'max-width: 4rem;' %>
@@ -95,7 +95,7 @@
               <% end %>
             </td>
             <td>
-              <%= button_to "Show this student", student.records[0], :method => :get, class: "hover:underline hover:underline-offset-4"%>
+              <a href="<%= student_path(student.records[0]) %>" class="hover:underline hover:underline-offset-4"></a>
             </td>
           </tr>
         <% end %>
@@ -120,7 +120,7 @@
               <div></div>
           <% end %>
           <%= student.records[0].lastname %>, <%= student.records[0].firstname %>
-          <%= button_to "Show this student", student.records[0], :method => :get, class: "mb-2 hover:underline hover:underline-offset-4 hover:cursor-pointer"%>
+          <a href="<%= student_path(student.records[0]) %>" class="mb-2 hover:underline hover:underline-offset-4 hover:cursor-pointer">View Student Profile</a>
       </div>
     <% end %>
     </div>
@@ -150,6 +150,11 @@
           $(this).closest("tr").show();
         }
       });
+    });
+
+    // Add click event listener to rows
+    $("#students tr").click(function() {
+      window.location = $(this).data("href");
     });
   });
 </script>
