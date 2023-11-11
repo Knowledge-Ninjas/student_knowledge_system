@@ -38,9 +38,13 @@ end
 def self.search_student(search, teacher)
   if search
     if search.include?(" ")
-      student = Student.where(firstname: search.split(" ")[0], lastname: search.split(" ")[1]).all
+    #   student = Student.where(firstname: search.split(" ")[0], lastname: search.split(" ")[1]).all
+    # else
+    #   student = Student.where(firstname: search).all + Student.where(lastname: search).all
+      student = Student.where("lower(firstname) = ? AND lower(lastname) = ?", search.split(" ")[0].downcase, search.split(" ")[1].downcase).all
     else
-      student = Student.where(firstname: search).all + Student.where(lastname: search).all
+      student = Student.where("lower(firstname) = ? OR lower(lastname) = ?", search.downcase, search.downcase).all
+    
     end
     enrollment = []
     for stud in student do

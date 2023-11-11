@@ -96,8 +96,9 @@ class CoursesController < ApplicationController
             all_tag_assocs = StudentsTag.where(tag_id: selected_tag_id, teacher: current_user.email)
             @student_records = @student_records.select {|record| all_tag_assocs.any? { |assoc| record.id == assoc.student_id}}
         else
-            @student_records = Student.where(id: @student_ids, teacher: current_user.email) 
-        end
+            # @student_records = Student.where(id: @student_ids, teacher: current_user.email) 
+            @student_records = Student.where("LOWER(name) LIKE ?", "%#{params[:search_name].downcase}%").where(id: @student_ids, teacher: current_user.email)
+          end
     #if the user doesnt select any dropdown menu filters, display all students
     else
         #get all the current and previous semesters and sections of this course
@@ -246,5 +247,4 @@ class CoursesController < ApplicationController
       params.require(:course).permit(:course_name, :section, :semester).with_defaults(teacher: current_user.email)
     end
 
-    
 end
