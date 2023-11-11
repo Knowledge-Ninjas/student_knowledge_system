@@ -52,11 +52,11 @@
 
   </div>
   <div class="flex justify-center items-center container w-auto mt-6">
-    <details class="font-fira-sans mt-1 mb-8 bg-gray-200 hover:bg-gray-300 px-4 py-3 drop-shadow rounded-xl border-2 flex items-center container">
-    <summary class="list-none hover:underline hover:underline-offset-4 cursor-pointer ">
-      View More Statistics
-    </summary>
-    <br>
+    <details class="font-fira-sans mt-1 mb-8 bg-gray-200 hover:bg-gray-300 px-4 py-3 drop-shadow rounded-xl border-2 flex items-center container" id="statisticsDetails">
+      <summary class="list-none hover:underline hover:underline-offset-4 cursor-pointer" onclick="toggleStatistics()">
+        View More Statistics
+      </summary>
+      <br>
       <div>
         <div class="row gx-2 mb-3 p-3">
           <div class="border border-white rounded p-4">
@@ -111,3 +111,16 @@
   <% end %>
 
 </div>
+
+<script>
+  function toggleStatistics() {
+    const details = document.getElementById('statisticsDetails');
+    const summary = details.querySelector('summary');
+
+    if (details.open) {
+      summary.textContent = 'View More Statistics';
+    } else {
+      summary.textContent = 'Show Less Statistics';
+    }
+  }
+</script>
