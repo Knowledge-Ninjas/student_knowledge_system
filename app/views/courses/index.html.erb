@@ -24,7 +24,7 @@
           <% end %>
         </th>
         <th class="font-source-serif-pro">
-          View Course Profile: <br>
+          Student Name: <br>
           <%= form_tag('/courses', method: :get) do %>
             <%= text_field_tag :search_student, params[:search_student], placeholder: "Search by Student", class: "rounded w-3/4 mt-2 mb-3" %>
             <%= submit_tag 'Search Student', :name => nil, class: "cursor-pointer hover:underline hover:underline-offset-4 py-1 px-3 mb-[1rem] border-2 rounded border-dotted border-[#500000]" %>
