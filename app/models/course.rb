@@ -33,10 +33,10 @@ class Course < ApplicationRecord
       search_type = Course.where(semester: search, teacher: teacher).all
       if search_type
         self.where(id: search_type)
-      elsif (search_type.length == 0)
-        @courses_db_result = Course.where(teacher: teacher)
-      else
-        @courses_db_result = Course.where(id: 0)
+#      elsif (search_type.length == 0)
+#        @courses_db_result = Course.where(teacher: teacher)
+#      else
+#        @courses_db_result = Course.where(id: 0)
       end
     else
       @courses_db_result = Course.where(teacher: teacher)
@@ -68,10 +68,10 @@ def self.search_student(search, teacher)
     @courses_db_result = Course.where(teacher: teacher)
       if search_type
         self.where(id: search_type)
-      elsif (search_type.length == 0)
-        @courses_db_result = Course.where(teacher: teacher)
-      else
-        @courses_db_result = Course.where(id: 0)
+      #elsif (search_type.length == 0)
+      #  @courses_db_result = Course.where(teacher: teacher)
+      #else
+      #  @courses_db_result = Course.none
       end
 #    else
 #      @courses_db_result = Course.where(teacher: teacher)
