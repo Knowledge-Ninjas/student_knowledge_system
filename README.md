@@ -1,8 +1,9 @@
 # Student Knowledge System
+![image](https://github.com/Knowledge-Ninjas/student_knowledge_system/assets/143157800/2dd6f3bf-c9d9-4b38-b50e-8769b464c694)
 
-You can access our web application by clicking on the link below and creating a new account using your TAMU email id.
+A Ruby on Rails web application for instructors to manage student records across courses. You can access our web application by clicking on the link below and creating a new account using your TAMU email id.
 
-https://sks-tamu-dev-e3e46be25a57.herokuapp.com/
+(https://sks-tamu-dev-e3e46be25a57.herokuapp.com/)
 
 ## Getting Started (From Zero to Deployed in ... Some Amount of Time)
 
