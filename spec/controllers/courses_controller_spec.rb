@@ -129,6 +129,54 @@ RSpec.describe CoursesController, type: :controller do
             expect(assigns(:student_records).first.records.first.lastname).to eq("Oliphant")
         end
 
+        context 'when the course is not found' do
+          it 'redirects to courses_url with a notice for HTML format' do
+            get :show, params: { id: 'nonexistent_course_id' }
+            expect(response).to redirect_to(courses_url)
+            expect(flash[:notice]).to eq('Given course not found.')
+          end
+        
+          it 'returns a JSON response with no content for JSON format' do
+            get :show, params: { id: 'nonexistent_course_id' }, format: :json
+            expect(response).to have_http_status(:no_content)
+            expect(response.body).to be_blank
+          end
+        end
+
+        # context "when populating student_records_hash" do
+        #   before do
+        #     @test_course = Course.create(course_name: "Test Course", teacher: 'student@gmail.com', section: '101', semester: 'Fall 2023')
+        #     @test_student = Student.create(firstname: 'John', lastname: 'Doe', uin: '123456789', email: 'john.doe@example.com', classification: 'U1', major: 'CS', teacher: 'student@gmail.com')
+        #     @student_records = [@test_student]
+        #   end
+        
+        #   it "populates student_records_hash with the correct entries" do
+        #     get :show, params: { id: @test_course.id }
+        
+        #     # Debugging output to inspect the content of student_records_hash
+        #     puts "DEBUG: #{assigns(:student_records_hash).inspect}"
+        
+        #     student_entry = assigns(:student_records_hash)[@test_student.uin]
+            
+        #     # Debugging output to inspect the value of student_entry
+        #     puts "DEBUG student_entry: #{student_entry.inspect}"
+        
+        #     # Check that student_entry is not nil
+        #     expect(student_entry).not_to be_nil
+        
+        #     # Check that student_entry is an instance of StudentEntries
+        #     expect(student_entry).to be_an_instance_of(StudentEntries)
+        
+        #     # Check if student_entry has records
+        #     expect(student_entry.records).not_to be_nil
+        
+        #     # Check that records include @test_student
+        #     expect(student_entry.records).to include(@test_student)
+        
+        #     # Continue with other expectations...
+        #   end
+        # end
+
 
         
 
