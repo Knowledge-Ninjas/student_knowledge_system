@@ -30,7 +30,7 @@ https://sks-tamu-dev-e3e46be25a57.herokuapp.com/
 * Run rspec tests: `rails spec`
 * Assert that all tests are passing.  if they are not, find out which are failing and fix them and/or contact the previous team for help in fixing them.  possibly, the failing tests are themselves invalid and can be safely skipped?
 
-### If you want to run the application for local testing following the steps below, if you want to get it deployed to production skip below to the Production Ready steps.
+## If you want to run the application for local testing following the steps below, if you want to get it deployed to Production skip below to the Production Ready steps.
 
 ## Getting the Application Development Ready
 
