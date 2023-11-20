@@ -98,7 +98,25 @@ RSpec.describe StudentsController, type: :controller do
       it 'renders the index template' do
         expect(response).to render_template(:index)
       end
-  
+
+      it "handles filtering by selected_course when @selected_semester is an empty string" do
+        get :index, params: { selected_course: 'CSCE 411', selected_semester: '', selected_tag: '' }
+      
+        expect(assigns(:target_course_id)).to eq(Course.where(course_name: 'CSCE 411'))
+      end
+      
+      it "handles filtering by selected_semester when @selected_course is an empty string" do
+        get :index, params: { selected_course: '', selected_semester: 'Spring 2023', selected_tag: '' }
+      
+        expect(assigns(:target_course_id)).to eq(Course.where(semester: 'Spring 2023'))
+      end
+
+      it "handles filtering when @selected_semester and @selected_course are both empty" do
+        get :index, params: { selected_course: '', selected_semester: '', selected_tag: '' }
+      
+        expect(assigns(:target_course_id)).to eq([1, 2, 3])
+      end
+
       it "handles new tags and creates StudentsTag associations" do
         allow(Tag).to receive(:where).and_return([@tag])  # Mock Tag.where to return the tag
   
@@ -118,6 +136,10 @@ RSpec.describe StudentsController, type: :controller do
   
         expect(Tag.count).to eq(2)  # Ensure Tag is created
       end
+
+      
+
+      
     end
 
     it "handles case when @student is nil" do
