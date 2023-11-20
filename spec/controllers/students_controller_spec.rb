@@ -117,5 +117,21 @@ RSpec.describe StudentsController, type: :controller do
         expect(Tag.count).to eq(2)  # Ensure Tag is created
       end
     end
+
+    it "redirects to quiz_students_path when there are due students" do
+      allow(Student).to receive(:getDue).and_return([@student])
+    
+      get :getDueStudentQuiz
+      expect(assigns(:dueStudents)).to be_an(Array).or be_nil
+      expect(response).to redirect_to(quiz_students_path(@student))
+    end
+    
+    it "redirects to home_path when there are no due students" do
+      allow(Student).to receive(:getDue).and_return([])
+    
+      get :getDueStudentQuiz
+      expect(assigns(:dueStudents)).to be_an(Array).or be_nil
+      expect(response).to redirect_to(home_path)
+    end
   end
 end

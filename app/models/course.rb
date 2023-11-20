@@ -3,6 +3,11 @@ class Course < ApplicationRecord
   has_many :students, through: :enrollments
   attribute :archived, :boolean, default: false
   validates :archived, inclusion: { in: [true, false] }
+
+  def number_of_students_in_course
+    students.count
+  end
+
   def self.search_course(search, teacher)
       if search
         search_type = Course.where(course_name: search, teacher: teacher).all
