@@ -114,7 +114,7 @@ RSpec.describe StudentsController, type: :controller do
       it "handles filtering when @selected_semester and @selected_course are both empty" do
         get :index, params: { selected_course: '', selected_semester: '', selected_tag: '' }
       
-        expect(assigns(:target_course_id)).to eq([1, 2, 3])
+        expect(assigns(:target_course_id)).to eq([@course1.id, @course2.id, @course3.id])
       end
 
       it "handles new tags and creates StudentsTag associations" do
