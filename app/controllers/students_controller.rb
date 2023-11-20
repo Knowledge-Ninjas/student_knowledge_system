@@ -246,14 +246,17 @@ class StudentsController < ApplicationController
 
     end
 
-    def getDueStudentQuiz()
+    def getDueStudentQuiz
         path = ""
-        if @dueStudents.length > 0
+        @dueStudents = Student.getDue(current_user.email)
+      
+        if @dueStudents&.any?
           student = @dueStudents.sample
-          return quiz_students_path(student)
+          path = quiz_students_path(student)
         else
-          return home_path
+          path = home_path
         end
+        redirect_to path
       end
       helper_method :getDueStudentQuiz
 

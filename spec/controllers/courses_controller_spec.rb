@@ -270,4 +270,32 @@ RSpec.describe CoursesController, type: :controller do
       end
   end
 
+  describe '#number_of_students_in_course' do
+    it 'returns the correct number of students in the course' do
+      expect(@course1.number_of_students_in_course).to eq(0)
+      expect(@course2.number_of_students_in_course).to eq(0)
+      expect(@course3.number_of_students_in_course).to eq(0)
+    end
+  end
+
+  describe '#number_of_students_in_course handles a course with no students' do
+    it 'returns 0 for a course with no students' do
+      empty_course = Course.create(course_name: 'Empty Course', teacher: 'student@gmail.com', section: '101', semester: 'Fall 2022')
+      expect(empty_course.number_of_students_in_course).to eq(0)
+    end
+  end
+
+  describe '#number_of_students_in_course' do
+    it 'returns the correct number of students in the course' do
+      expect(controller.number_of_students_in_course(@course1.id)).to eq(0)
+    end
+
+    it 'handles a course with no students' do
+      expect(controller.number_of_students_in_course(@course2.id)).to eq(0)
+    end
+
+    it 'handles a non-existent course' do
+      expect { controller.number_of_students_in_course(999) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end

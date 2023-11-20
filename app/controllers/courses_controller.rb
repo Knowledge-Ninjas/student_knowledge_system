@@ -215,7 +215,7 @@ class CoursesController < ApplicationController
   def number_of_students_in_course(course_id)
     course = Course.find(course_id)
     students = course.students
-    @counted =  students.count
+    students.count
   end
 
   # DELETE /courses/1 or /courses/1.json
