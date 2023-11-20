@@ -54,14 +54,14 @@ class NotesController < ApplicationController
   end
   
   # DELETE /students/:student_id/notes/:id
-  def destroy
-    @student = Student.find(params[:student_id])
-    @note = @student.notes.find(params[:id])
+  # def destroy
+  #   @student = Student.find(params[:student_id])
+  #   @note = @student.notes.find(params[:id])
   
-    puts "Destroying note with ID: #{@note.id}" # Add this line for debugging
-    @note.destroy
-    redirect_to @student, notice: 'Note was successfully deleted.'
-  end
+  #   puts "Destroying note with ID: #{@note.id}" # Add this line for debugging
+  #   @note.destroy
+  #   redirect_to @student, notice: 'Note was successfully deleted.'
+  # end
 
   private
 

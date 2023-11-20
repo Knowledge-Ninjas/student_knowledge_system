@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe StudentsController, type: :controller do
   describe "#controller" do
     before do
+
       @user = User.create(email:'student@gmail.com', confirmed_at:Time.now)
       # authenticate_by_session(@user)
       allow(controller).to receive(:current_user).and_return(@user)
@@ -89,7 +90,7 @@ RSpec.describe StudentsController, type: :controller do
         params = {
           selected_course: @course1.course_name,
           selected_semester: @course1.semester,
-          selected_tag: 'example_tag'
+          selected_tag: 'ExampleTag'
         }
         get :index, params: params
       end
@@ -97,7 +98,25 @@ RSpec.describe StudentsController, type: :controller do
       it 'renders the index template' do
         expect(response).to render_template(:index)
       end
-  
+
+      it "handles filtering by selected_course when @selected_semester is an empty string" do
+        get :index, params: { selected_course: 'CSCE 411', selected_semester: '', selected_tag: '' }
+      
+        expect(assigns(:target_course_id)).to eq(Course.where(course_name: 'CSCE 411'))
+      end
+      
+      it "handles filtering by selected_semester when @selected_course is an empty string" do
+        get :index, params: { selected_course: '', selected_semester: 'Spring 2023', selected_tag: '' }
+      
+        expect(assigns(:target_course_id)).to eq(Course.where(semester: 'Spring 2023'))
+      end
+
+      it "handles filtering when @selected_semester and @selected_course are both empty" do
+        get :index, params: { selected_course: '', selected_semester: '', selected_tag: '' }
+      
+        expect(assigns(:target_course_id)).to eq([@course1.id, @course2.id, @course3.id])
+      end
+
       it "handles new tags and creates StudentsTag associations" do
         allow(Tag).to receive(:where).and_return([@tag])  # Mock Tag.where to return the tag
   
@@ -113,10 +132,26 @@ RSpec.describe StudentsController, type: :controller do
             create_tag: 'NewTag'
           }
         }
+        
   
         expect(Tag.count).to eq(2)  # Ensure Tag is created
       end
+
+      
+
+      
     end
+
+    it "handles case when @student is nil" do
+      allow(Student).to receive(:find_by).and_return(nil)
+    
+      get :show, params: { id: 'nonexistent_id' }
+    
+      expect(assigns(:student)).to be_nil
+      expect(response).to redirect_to(students_url)
+      expect(flash[:notice]).to eq("Given student not found.")
+    end
+    
 
     it "redirects to quiz_students_path when there are due students" do
       allow(Student).to receive(:getDue).and_return([@student])
