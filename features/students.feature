@@ -145,4 +145,6 @@ Scenario: Clicking on a student row should navigate to the student profile
     Then I click on the student row to visit student profile page
 
 
+
+
     

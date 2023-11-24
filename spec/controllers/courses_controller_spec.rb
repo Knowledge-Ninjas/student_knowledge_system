@@ -114,7 +114,8 @@ RSpec.describe CoursesController, type: :controller do
             expect(assigns(:student_records)).to be_an_instance_of(Array)
         end
 
-        it "assigns filtered student_records based on dropdown menu selections" do
+
+              it "assigns filtered student_records based on dropdown menu selections" do
 
             get :show, params: { id: @course1.id, selected_tag: "is cool" }
             expect(assigns(:student_ids).count).to eq(0)
