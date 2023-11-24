@@ -11,9 +11,9 @@ class Student < ApplicationRecord
           search_type = Student.find_by(email: search, teacher: teacher)
           if search_type
             self.where(id: search_type)
-          elsif (search.length == 0)
+          #elsif (search.length == 0)
             #return no results
-            @students = Student.where(teacher: teacher)
+          #  @students = Student.where(teacher: teacher)
           else
             @students = Student.where(id: 0)
           end
