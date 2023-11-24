@@ -75,19 +75,6 @@
         <% end %>
       </div>
     <% end %>
-
-    <div class="col-span-4">
-    <label class="mb-2 block">Notes</label>
-    <% @student.notes.each do |note| %>
-      <div class="mb-2 rounded bg-gray-100 border border-gray-300 w-full overflow-x-scroll" style="padding: 10px;">
-        <div style="float: right; font-size: 80%; text-align: right;">
-          <p><strong>Added by:</strong> <%= note.added_by %></p>
-          <p><strong>Added at:</strong> <%= note.added_at.strftime('%Y-%m-%d %H:%M:%S') %></p>
-        </div>
-        <p><%= note.content %></p>
-      </div>
-    <% end %>
-  </div>
     
     <%= form.hidden_field :last_practice_at, value: Time.now %>
 
