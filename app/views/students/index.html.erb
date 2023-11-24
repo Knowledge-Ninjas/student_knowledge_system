@@ -16,6 +16,7 @@
       </div>
     <% end %>
   </div>
+  
 
   <table class="rounded mx-auto w-5/6 mt-2 mb-6 table table-striped table-hover text-center">
     <thead>
@@ -46,15 +47,19 @@
           <%= f.submit @yearbook_style ? "List View" : "Yearbook View", class: "cursor-pointer hover:underline hover:underline-offset-4 py-1 px-3 mb-[1rem] border-2 rounded border-dotted border-[#500000]" %>
           <% end %>
         </th>
+        
       </tr>
     
     <% if !@yearbook_style %>
+    <tr>    
+      <th colspan="5" class="text-center  font-normal font-source-serif-pro">Click on column header to sort</th>
+    </tr>
       <tr class="bg-slate-400 font-medium font-source-serif-pro">
         <th class="rounded-tl-lg px-auto py-2"> Image </th>
-        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2"> Name </th>
-        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2"> Email </th>
-        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2"> Course(s)/Semester(s): </th>
-        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2"> Tags </th>
+        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2" data-sortable> Name </th>
+        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2" data-sortable> Email </th>
+        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2" data-sortable> Course(s)/Semester(s): </th>
+        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2" data-sortable> Tags </th>
         
       </tr>
     <%end%>
@@ -136,15 +141,54 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  $(document).ready(function() {
-    $("#search-input").on("input", function() {
+  $(document).ready(function () {
+    // Sorting function
+    function sortTable(table, column, asc = true) {
+      const dirModifier = asc ? 1 : -1;
+      const tbody = table.find('tbody');
+      const rows = tbody.find('tr').toArray();
+
+      rows.sort((a, b) => {
+        const valA = $(a).find(`td:eq(${column})`).text().trim();
+        const valB = $(b).find(`td:eq(${column})`).text().trim();
+
+        return $.isNumeric(valA) && $.isNumeric(valB) ?
+          dirModifier * (valA - valB) :
+          dirModifier * valA.localeCompare(valB, undefined, {
+            numeric: true,
+            sensitivity: 'base'
+          });
+      });
+
+      tbody.empty();
+      rows.forEach(row => tbody.append(row));
+    }
+
+    // Add click event listener to sortable headers
+    $('th[data-sortable]').click(function () {
+      const table = $(this).closest('table');
+      const columnIndex = $(this).index();
+
+      // Toggle the sorting direction
+      const currentSortOrder = $(this).data('sort-order') || 'asc';
+      const newSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+      $(this).data('sort-order', newSortOrder);
+
+      // Remove arrow indicators from other headers
+      $(this).siblings('[data-sortable]').data('sort-order', null);
+
+      // Call the sorting function
+      sortTable(table, columnIndex, newSortOrder === 'asc');
+    });
+
+    $("#search-input").on("input", function () {
       var query = $(this).val().toLowerCase();
 
       // Hide all rows initially
       $("#students tr").hide();
 
       // Show rows where the name matches the query
-      $("#students tr td:nth-child(2)").each(function() {
+      $("#students tr td:nth-child(2)").each(function () {
         var studentName = $(this).text().toLowerCase();
         if (studentName.indexOf(query) >= 0) {
           $(this).closest("tr").show();
@@ -153,7 +197,7 @@
     });
 
     // Add click event listener to rows
-    $("#students tr").click(function() {
+    $("#students tr").click(function () {
       window.location = $(this).data("href");
     });
   });
