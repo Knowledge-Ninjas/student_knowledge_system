@@ -13,10 +13,18 @@
         <%= button_to "Show this course", @course, :method => :get %>
       </div>
     </div>
+    <div class="hover:bg-gray-200 w-auto py-1 px-3 border-2 rounded border-dotted border-[#500000]">
+      <%= button_to "Archive this course", archive_course_path(@course), :method => :get %>
+
+      </div>
     <div class="col">
+    
       <div class="hover:bg-gray-200 w-auto py-1 px-3 border-2 rounded border-dotted border-[#500000]">
         <%= button_to "Back to courses", courses_path, :method=>:get  %>
+
       </div>
+      
+      
     </div>       
   </div>
 </div>
