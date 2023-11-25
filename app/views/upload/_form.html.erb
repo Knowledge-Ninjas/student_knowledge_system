@@ -14,17 +14,17 @@
 
       <div class="flex flex-col font-source-serif-pro bg-white rounded p-4 w-full">
         <div class="text-center">
-            <!--input course code-->
-            <p class = "mb-2"> Course Code: </p>
-            <%= form.text_field :course_temp, pattern: '\b(?\w{3,4})V(?\d{3})\b', placeholder: "CSCE ###", class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4" %>
+          <!-- Course Code Drop-Down -->
+          <p class="mb-2">Course Code:</p>
+          <%= form.select :course_temp, options_for_select(['CSCE 606','CSCE 608','CSCE 610','CSCE 611','CSCE 613','CSCE 618','CSCE 620','CSCE 621', 'CHEM 623', 'ENGR 670', 'ENGR 678', 'ENGR 681', 'ENGR 689', 'ENGR 690', 'ENGR 691', 'ENGR 696', 'ENGR 698']), {}, class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4" %>
 
             <!--input section-->
             <p class = "mb-2"> Section: </p>
             <%= form.text_field :section_temp, pattern: '\b(?\d{3})\b', placeholder: "###", class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4" %>      
 
             <!--input semester-->
-            <p class = "mb-2"> Semester: </p>
-            <%= form.text_field :semester_temp, pattern: '\b(Fall|Spring)V(?\d{4})\b', placeholder: "Fall/Spring 20XX", class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4"%>
+            <p class="mb-2">Semester:</p>
+            <%= form.select :semester_temp, ['Fall 2023', 'Fall 2024', 'Spring 2023', 'Spring 2024'], { prompt: "Select a Semester" }, class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4" %>
         </div>
         <br>
         <div class="col">
