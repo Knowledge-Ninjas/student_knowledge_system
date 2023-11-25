@@ -30,10 +30,6 @@ class NotesController < ApplicationController
 
   def edit
     @note = find_note
-    unless @note
-      flash[:alert] = 'Note not found.'
-      redirect_to @student
-    end
   end
 
   def update
