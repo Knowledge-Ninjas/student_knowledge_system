@@ -75,6 +75,11 @@ Then('I should see {string} offered in {string}') do |course_name, semester|
     expect(hasCourse).to eq(true)
 end
 
+
+
+
+
+
 When('I fill in {string} with {string}') do |search, query|
     fill_in(search, with: query)
 end
