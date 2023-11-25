@@ -8,9 +8,9 @@ When('I upload a zip file') do
 end
 
 When('I input form information') do
-    fill_in('course_temp', with: "CSCE 606")
-    fill_in('section_temp', with: "000")
-    fill_in('semester_temp', with: "Fall 2022")
+    select('CSCE 606', from: 'course_temp')
+  fill_in('section_temp', with: '000')
+  select('Fall 2022', from: 'semester_temp')
 end
 
 When('I click save') do
@@ -26,9 +26,10 @@ When('I upload a zip file with .display files') do
   end
   
 When('I input 431 form information') do
-    fill_in('course_temp', with: "CSCE 431")
-    fill_in('section_temp', with: "550")
-    fill_in('semester_temp', with: "Spring 2023")
+    select('CSCE 431', from: 'course_temp')
+  fill_in('section_temp', with: '550')
+  select('Spring 2023', from: 'semester_temp')
+    
   end
 
 When('I create account and sign in as {string}') do |email|

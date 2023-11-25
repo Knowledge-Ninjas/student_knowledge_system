@@ -16,7 +16,7 @@
         <div class="text-center">
           <!-- Course Code Drop-Down -->
           <p class="mb-2">Course Code:</p>
-          <%= form.select :course_temp, options_for_select(['CSCE 606','CSCE 608','CSCE 610','CSCE 611','CSCE 613','CSCE 618','CSCE 620','CSCE 621', 'CHEM 623', 'ENGR 670', 'ENGR 678', 'ENGR 681', 'ENGR 689', 'ENGR 690', 'ENGR 691', 'ENGR 696', 'ENGR 698']), {}, class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4" %>
+          <%= form.select :course_temp, options_for_select(['CSCE 431','CSCE 606','CSCE 608','CSCE 610','CSCE 611','CSCE 613','CSCE 618','CSCE 620','CSCE 621', 'CHEM 623', 'ENGR 670', 'ENGR 678', 'ENGR 681', 'ENGR 689', 'ENGR 690', 'ENGR 691', 'ENGR 696', 'ENGR 698']), {}, class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4" %>
 
             <!--input section-->
             <p class = "mb-2"> Section: </p>
@@ -24,7 +24,7 @@
 
             <!--input semester-->
             <p class="mb-2">Semester:</p>
-            <%= form.select :semester_temp, ['Fall 2023', 'Fall 2024', 'Spring 2023', 'Spring 2024'], { prompt: "Select a Semester" }, class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4" %>
+            <%= form.select :semester_temp, ['Fall 2022','Fall 2023', 'Fall 2024', 'Spring 2023', 'Spring 2024'], { prompt: "Select a Semester" }, class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4" %>
         </div>
         <br>
         <div class="col">
