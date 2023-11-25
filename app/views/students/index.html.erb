@@ -1,205 +1,47 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.15/tailwind.min.css" integrity="sha512-SwsmRz5W8gC1tBUOZtJvLx+3qX0CUfn+vtWygoGckf7l3asqJ3E7ZQ26IplujBxRfzJX9F7fY+50UuOb7KQGqw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-
-<div class="bg-white p-2 flex flex-col mx-auto justify-center text-[#500000] w-5/6 drop-shadow-xl rounded mx-auto my-4 bg-gray-100">
-  <div class="w-4/5 my-2 py-2 mx-auto text-center border-2 border-dashed border-gray-400 rounded font-source-serif-pro text-[1.5rem] text-[#500000] font-bold">
-    <h1>Students</h1>
-  </div>
-
-  
-    <!-- Search form -->
-  <div class="my-4 mx-auto">
-    <%= form_with(url: search_students_path, method: "get", id: "search-form") do |f| %>
-      <div class="mb-4">
-        <%= f.label :search, "Search Students by Name", class: "block text-[#500000] font-bold mb-2" %>
-        <%= f.text_field :search, id: "search-input", placeholder: "Search by Name", class: "rounded border p-2" %>
-      </div>
-    <% end %>
-  </div>
-  
-
-  <table class="rounded mx-auto w-5/6 mt-2 mb-6 table table-striped table-hover text-center">
-    <thead>
-      <tr>
-        <th class="font-source-serif-pro" colspan="3">
-          Course(s)/Semester(s): <br>
-          <%= form_with(method: "get") do |f| %>
-          <% selected_course = nil%>
-          <%= f.select("selected_course", @course_names, {:include_blank => true}, {class: "mt-2 mb-2 rounded", :onchange => "selected_course=this.value;"}) %>
-
-          <% selected_semester = nil%>
-          <%= f.select("selected_semester", @semesters, {:include_blank => true}, {class: "mt-2 mb-2  rounded", :onchange => "selected_semester=this.value;"}) %>
-        </th>
-        <th class="font-source-serif-pro" colspan="3">
-          Tags:
-          <% selected_tag = nil%> <br>
-          <%= f.select("selected_tag", @tags, {:include_blank => true}, {class: "mt-2  mb-2 rounded", :onchange => "selected_tag=this.value;"}) %>
-        </th>
-      </tr>
-      <tr class = "font-source-serif-pro">
-        <th colspan="3">
-          <%= f.submit "Filter Students List", class: "cursor-pointer hover:underline hover:underline-offset-4 py-1 px-3 mb-[1rem] border-2 rounded border-dotted border-[#500000]"%>
-          <% end %>
-        </th>
-        <th colspan="3">
-          <%= form_with(url: students_path, method: :get, local: true) do |f| %>
-          <%= f.hidden_field :yearbook_style, value: !@yearbook_style %>
-          <%= f.submit @yearbook_style ? "List View" : "Yearbook View", class: "cursor-pointer hover:underline hover:underline-offset-4 py-1 px-3 mb-[1rem] border-2 rounded border-dotted border-[#500000]" %>
-          <% end %>
-        </th>
-        
-      </tr>
-    
-    <% if !@yearbook_style %>
-    <tr>    
-      <th colspan="5" class="text-center  font-normal font-source-serif-pro">Click on column header to sort</th>
-    </tr>
-      <tr class="bg-slate-400 font-medium font-source-serif-pro">
-        <th class="rounded-tl-lg px-auto py-2"> Image </th>
-        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2" data-sortable> Name </th>
-        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2" data-sortable> Email </th>
-        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2" data-sortable> Course(s)/Semester(s): </th>
-        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2" data-sortable> Tags </th>
-        
-      </tr>
-    <%end%>
-    </thead>
-
-    <tbody class="rounded font-source-serif-pro border"id="students">
-    <% if !@yearbook_style %>
-      <div>
-        <% @students.each do |student| %>
-          <tr class="even:bg-white odd:bg-gray-100 hover:bg-gray-200" data-href="<%= student_path(student.records[0]) %>">
-            <td>
-              <% if student.records[0].image.attached? %>
-                  <%= image_tag student.records[0].image.variant(:thumb), class: 'py-4 bi bi-person rounded-circle d-block mx-auto', style: 'max-width: 4rem;' %>
-              <% else %>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person rounded-circle" viewBox="0 0 16 16">
-                      <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
-                  </svg>
-              <% end %>
-            </td>
-            <td>
-              <%= student.records[0].lastname %>, <%= student.records[0].firstname %>
-            </td>
-            <td>
-              <%= student.records[0].email %>
-            </td>
-            <td>
-              <%= student.course_semester.to_a.join(", ") %>
-            </td>
-            <td>
-              <% if StudentsTag.where(student_id: student.records[0].id).length == 0 %>
-                  None
-              <% else %>
-                  <% tag_display_array = [] %>
-                  <% StudentsTag.where(student_id: student.records[0].id).each do |association| %>
-                      <% tag_display_array.append(Tag.where(id: association.tag_id)[0].tag_name) %>
-                  <% end %>
-                  <%= tag_display_array.join(", ") %>
-              <% end %>
-            </td>
-            <td>
-              <a href="<%= student_path(student.records[0]) %>" class="hover:underline hover:underline-offset-4"></a>
-            </td>
-          </tr>
-        <% end %>
-      </div>
-    <% end %>
-  </table>
-
-
-
-    <% if @yearbook_style %>
-
-    <div id="yearbookstyle" class="mx-auto grid grid-cols-3 gap-2">
-    <% @students.each do |student| %>
-      <div class="text-center m-2 font-source-serif-pro bg-[#DBABAB] rounded">
-          <% if student.records[0].image.attached? %>
-              <%= image_tag student.records[0].image.variant(:thumb), class: 'bi bi-person square d-block mx-auto py-4 px-4', style: 'max-width: 12rem;' %>
-          <% else %>
-              <svg xmlns="http://www.w3.org/2000/svg" width="12rem" height="12rem" class="bi bi-person rounded-square" viewBox="0 0 16 16">
-                  <rect width="100%" height="100%" fill="gray" />
-                  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
-              </svg>
-              <div></div>
-          <% end %>
-          <%= student.records[0].lastname %>, <%= student.records[0].firstname %>
-          <a href="<%= student_path(student.records[0]) %>" class="mb-2 hover:underline hover:underline-offset-4 hover:cursor-pointer">View Student Profile</a>
-      </div>
-    <% end %>
-    </div>
-    <br>
-    <% end %>
+<div class="mx-auto container text-center show" id="upForm">
+  <%= render 'form' %>
 </div>
 
-<footer class="flex justify-center hd footer mt-auto text-center mb-6">
-  <div class="font-source-serif-pro font-semibold hover:bg-gray-300 text-[#500000] text-[1rem] container w-auto hover:underline hover:underline-offset-4 py-1 px-3 border-2 rounded border-dotted border-[#500000]">
-    <span><%= button_to "New student", new_student_path, :method => :get %></span>
+<!-- Add a button to show the popup -->
+<button class="mt-4 font-source-serif-pro text-[#500000] hover:underline hover:underline-offset-4" onclick="togglePopup()">Show Upload Instructions for Adding New Course</button>
+<!-- Add the popup with steps -->
+<div id="upload-popup" class="fixed top-0 left-0 w-full h-full flex items-center justify-center hidden">
+  <div class="absolute top-0 left-0 w-full h-full bg-gray-900 opacity-50"></div>
+  <div class="bg-white w-4/5 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+    <div class="py-4 px-6">
+      <div class="flex justify-between items-center pb-3">
+        <p class="text-2xl font-bold">Upload Instructions</p>
+        <button class="bg-gray-800 text-white close-popup">&times;</button>
+      </div>
+      <div class="mb-2">
+        <p class="text-lg font-bold mb-2">Step 1</p>
+        <p class="text-gray-700">Uplaod a singular ZIP file containing the students' information which can be retrieved from the TAMU Howdy Portal. You are not required to change anything in the file.</p>
+      </div>
+      <div class="mb-2">
+        <p class="text-lg font-bold mb-2">Step 2</p>
+        <p class="text-gray-700">Fill the course information inside the form on this page in the following format:</p>
+        <ul class="list-disc list-inside text-gray-700">
+        <li>Course Code: ABCD 123 or ABC 123</li>
+        <li>Section code: 123</li>
+        <li>Semester Code: Fall 1234 or Spring 1234</li>
+        </ul>
+        <br>
+        <p class="text-red-700">Note: Make sure you input the information in the required format, else the course won't be added</p>
+      </div>
+      <div class="flex justify-end pt-2">
+        <button class="px-4 bg-transparent p-3 rounded-lg text-blue-500 hover:bg-gray-100 hover:text-blue-400 mr-2 close-popup">Close</button>
+      </div>
+    </div>
   </div>
-</footer>
+</div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Add the JavaScript to show and hide the popup -->
 <script>
-  $(document).ready(function () {
-    // Sorting function
-    function sortTable(table, column, asc = true) {
-      const dirModifier = asc ? 1 : -1;
-      const tbody = table.find('tbody');
-      const rows = tbody.find('tr').toArray();
+  function togglePopup() {
+    document.getElementById('upload-popup').classList.toggle('hidden');
+  }
 
-      rows.sort((a, b) => {
-        const valA = $(a).find(`td:eq(${column})`).text().trim();
-        const valB = $(b).find(`td:eq(${column})`).text().trim();
-
-        return $.isNumeric(valA) && $.isNumeric(valB) ?
-          dirModifier * (valA - valB) :
-          dirModifier * valA.localeCompare(valB, undefined, {
-            numeric: true,
-            sensitivity: 'base'
-          });
-      });
-
-      tbody.empty();
-      rows.forEach(row => tbody.append(row));
-    }
-
-    // Add click event listener to sortable headers
-    $('th[data-sortable]').click(function () {
-      const table = $(this).closest('table');
-      const columnIndex = $(this).index();
-
-      // Toggle the sorting direction
-      const currentSortOrder = $(this).data('sort-order') || 'asc';
-      const newSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
-      $(this).data('sort-order', newSortOrder);
-
-      // Remove arrow indicators from other headers
-      $(this).siblings('[data-sortable]').data('sort-order', null);
-
-      // Call the sorting function
-      sortTable(table, columnIndex, newSortOrder === 'asc');
-    });
-
-    $("#search-input").on("input", function () {
-      var query = $(this).val().toLowerCase();
-
-      // Hide all rows initially
-      $("#students tr").hide();
-
-      // Show rows where the name matches the query
-      $("#students tr td:nth-child(2)").each(function () {
-        var studentName = $(this).text().toLowerCase();
-        if (studentName.indexOf(query) >= 0) {
-          $(this).closest("tr").show();
-        }
-      });
-    });
-
-    // Add click event listener to rows
-    $("#students tr").click(function () {
-      window.location = $(this).data("href");
-    });
-    
+  document.querySelectorAll('.close-popup').forEach((button) => {
+    button.addEventListener('click', togglePopup);
   });
 </script>
