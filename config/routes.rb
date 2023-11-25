@@ -25,10 +25,8 @@ Rails.application.routes.draw do
   #get 'students/:id/add_notes', to: 'notes#new', as: 'add_notes'
 
   resources :students do
-    # Nested route for adding notes
-    resources :notes, only: [:new, :create, :destroy]
+    resources :notes, only: [:new, :create, :edit, :update, :destroy]
     get 'students/:id/add_notes', to: 'notes#new', as: 'add_notes'
-    #post 'create_note', to: 'notes#create', as: 'create_note'
     post 'create_note/:student_id', to: 'notes#create', on: :member, as: 'create_note'
   end
   # Define a resource for students
