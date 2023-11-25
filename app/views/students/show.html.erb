@@ -70,22 +70,34 @@
                   <p><%= tag_display_array.join(", ") %></p>
               <% end %>
             </p>
-
             <p>
             <strong>Notes:</strong>
             <% if @student.notes.present? %>
-              <ul>
+              <ul class="list-none p-0">
                 <% @student.notes.each do |note| %>
-                  <li><%= note.content %></li>
+                  <li class="mb-2">
+                    <div class="border border-gray-300 p-1 rounded shadow mr-2 relative">
+                      <div class="mb-2">
+                        <%= note.content %>
+                      </div>
+                      <div class="text-sm mb-2 absolute bottom-0 left-2">
+                        <i>Added by: <%= note.added_by %>, <%= note.added_at.strftime('%B %d, %Y %I:%M %p') %></i>
+                      </div>
+                      <div class="flex justify-end mt-2">
+                        <%= link_to 'Edit', edit_student_note_path(@student, note), class: 'text-blue-500' %>
+                        <%= form_with(model: [@student, note], method: :delete, local: true) do |form| %>
+                          <%= form.submit 'Delete', class: 'text-red-500 ml-2' %>
+                        <% end %>
+                      </div>
+                    </div>
+                  </li>
                 <% end %>
               </ul>
             <% else %>
               No notes available.
             <% end %>
-          </p>
-          
+          </p>            
         </div>
-
     </div>
   </div>
 </div>

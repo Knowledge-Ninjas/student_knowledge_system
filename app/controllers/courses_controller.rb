@@ -5,7 +5,7 @@ class CoursesController < ApplicationController
   before_action :require_user!
 
 
- 
+
 
   # GET /courses or /courses.json
   def index 
@@ -45,6 +45,7 @@ class CoursesController < ApplicationController
     #get all students currently and previously enrolled in this course
     @student_ids = StudentCourse.where(course_id: @all_course_ids).pluck(:student_id)
     @student_records = Student.where(id: @student_ids)
+    @num_students = @student_records.count
 
 ####for due courses
     #@course_ids = Course.where(course_name: @course.course_name, teacher: current_user.email).pluck(:id)
@@ -202,7 +203,7 @@ class CoursesController < ApplicationController
 
   def archived_courses
     @archived_courses = Course.where(archived: true)
-    
+
   end
 
   def unarchive
