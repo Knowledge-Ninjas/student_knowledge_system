@@ -1,6 +1,7 @@
 
 <head>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.1.4/tailwind.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <div class="flex flex-col justify-center my-3">
@@ -15,6 +16,19 @@
         <%= button_to "Back to courses", courses_path, :method => :get, class: "hover:underline hover:underline-offset-4" %>
       </div>
     </div>
+
+    <div class="col">
+      <%= form_with(url: search_students_path, method: "get", id: "search-form") do |f| %>
+        <div class="mb-4">
+          <%= f.label :search, "Search Students by Name", class: "block text-[#500000] font-bold mb-2" %>
+          <%= f.text_field :search, id: "search-input", placeholder: "Search by Name", class: "rounded border p-2" %>
+
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+    
   </div>
   <div class="flex justify-center">
     <div class="bg-white flex flex-row justify-between my-6 w-full rounded-xl mx-10">
@@ -61,6 +75,7 @@
                     <%= f.submit "Filter Students List", class: "hover:cursor-pointer"%>
                     <% end %>
                   </div>
+                  
                 </div>
                 
               </div>
@@ -72,3 +87,32 @@
     </div>
   </div>
 </div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+  $(document).ready(function() {
+    function performSearch() {
+      var query = $("#search-input").val().toLowerCase();
+
+      // Hide all rows initially
+      $("#students tbody tr").hide();
+
+      // Show rows where the name matches the query
+      $("#students tbody tr").each(function() {
+        var studentName = $(this).find("td:nth-child(2)").text().toLowerCase();
+        if (studentName.indexOf(query) >= 0) {
+          // Show only the current row
+          $(this).show();
+        }
+      });
+    }
+
+    $("#search-input").on("input", function() {
+      performSearch();
+    });
+
+  
+  });
+</script>
