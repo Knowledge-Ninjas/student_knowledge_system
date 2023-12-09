@@ -96,7 +96,7 @@ class CoursesController < ApplicationController
             selected_tag_id = Tag.find_by(tag_name: @selected_tag).id
             all_tag_assocs = StudentsTag.where(tag_id: selected_tag_id, teacher: current_user.email)
             @student_records = @student_records.select {|record| all_tag_assocs.any? { |assoc| record.id == assoc.student_id}}
-        else
+        elsif params[:search_name].present?
             # @student_records = Student.where(id: @student_ids, teacher: current_user.email) 
             @student_records = Student.where("LOWER(name) LIKE ?", "%#{params[:search_name].downcase}%").where(id: @student_ids, teacher: current_user.email)
           end
